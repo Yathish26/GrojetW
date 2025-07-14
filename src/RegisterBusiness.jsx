@@ -52,7 +52,7 @@ export default function RegisterBusiness() {
                             id="email"
                             name="email"
                             className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            placeholder="business@example.com"
+                            placeholder="Email"
                             required
                         />
                     </div>
@@ -64,7 +64,7 @@ export default function RegisterBusiness() {
                             id="phone"
                             name="phone"
                             className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            placeholder="+1234567890"
+                            placeholder="Contact"
                             required
                         />
                     </div>
