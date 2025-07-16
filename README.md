@@ -1,12 +1,84 @@
-# React + Vite
+# Grojet Delivery 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Grojet Delivery Logo](https://i.ibb.co/JWRxBxkN/ogimage.png)
 
-Currently, two official plugins are available:
+[Grojetdelivery.com](https://grojetdelivery.com/)  
+Fast and convenient grocery delivery — coming soon to your neighborhood!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📦 What We Offer
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Quick Grocery Delivery**  
+  Order groceries from your phone and get them delivered to your doorstep—aiming for lightning-fast 30-minute service.
+
+- **Local First**  
+  Supporting local vendors and fostering community. #vocalforlocal
+
+- **User-Friendly Experience**  
+  One-stop web & mobile app for browsing, selecting, and ordering essentials.
+
+---
+
+## 🚀 Features (Coming Soon)
+
+- Browse by category: Fresh produce, pantry staples, dairy, beverages, snacks, and more.
+- Real-time order tracking.
+- Seamless in-app checkout with multiple payment options.
+- Personalized recommendations based on your taste and purchase history.
+- Scheduled deliveries and repeat/preset order functionality.
+
+---
+
+## 🗓️ Launch & Availability
+
+- **Soft Launch**: Rolling out soon in select areas (e.g., Mangaluru).
+- **Beta Testers Wanted**: Sign up early for exclusive access and perks.
+
+---
+
+## 📱 Mobile App
+
+- An Android and IOS Application for the Users to Order
+- A companion app for delivery agents is available on Android via APK.
+- Expect future updates, improved UX, and live order tracking.
+
+---
+
+## 🎯 Why Choose Grojet?
+
+- **Speed** — Groceries in ~30 minutes from order.  
+- **Local Love** — Supports local brands and vendors.
+- **Convenience** — Easy ordering for everyday essentials.
+
+---
+
+## 🧭 Getting Started
+
+1. Visit [GrojetDelivery.com](https://grojetdelivery.com/) to get notified.
+3. Choose your delivery zone and place your first order.
+4. Enjoy fresh groceries delivered fast!
+
+---
+
+## 🤝 Contact & Follow Us
+
+- **Facebook**: [Grojet Delivery](https://www.facebook.com/profile.php?id=61578161875248)
+- **Instagram**: [@Grojetdelivery](https://www.instagram.com/grojet_delivery)
+- **Support & Feedback**: Coming soon — check website for contact details.
+
+---
+
+## 👨‍💻 Roadmap
+
+| Phase     | Features                                   |
+|-----------|--------------------------------------------|
+| β Launch  | Service in limited areas, basic order flow |
+| V1        | iOS app, user accounts, scheduled delivery |
+| V2        | Grocery marketplace, community features    |
+
+<!-- ---
+
+## 📜 License
+
+MIT License. See [LICENSE.md](LICENSE.md) for details. -->
