@@ -7,18 +7,22 @@ import Admin from './Admin/Admin.jsx'
 import AddInventory from './Admin/AddInventory.jsx'
 import AdminLogin from './Admin/AdminLogin.jsx'
 import Inventory from './Admin/Inventory.jsx'
+import PrivacyPolicy from './Privacy.jsx'
+import Merchants from './Admin/Merchants.jsx'
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/terms" element={<Terms />} />
+        <Route path="/terms-and-conditions" element={<Terms />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/register-business" element={<RegisterBusiness />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/add-inventory" element={<AddInventory />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/inventory" element={<Inventory />} />
+        <Route path="/admin/merchants" element={<Merchants />} />
       </Routes>
     </Router>
   )
