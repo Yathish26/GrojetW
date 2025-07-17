@@ -1,70 +1,144 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Lock, Mail, Loader2, AlertCircle } from 'lucide-react';
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(null)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const navigation = useNavigate();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
+
     try {
       const response = await fetch('http://192.168.1.35:5000/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
-      })
-      const data = await response.json()
-      if (data.success) {
-        localStorage.setItem('admintoken', data.token)
-        navigation('/admin')
-      } else {
-        setError(data.message)
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
       }
-    } catch (e) {
-      setError('Error occurred while logging in')
-      console.error('Login error:', e)
+
+      if (data.success) {
+        localStorage.setItem('admintoken', data.token);
+        navigate('/admin');
+      }
+    } catch (err) {
+      setError(err.message || 'An error occurred while logging in');
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
-      <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-200 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-900 mb-8">Admin Login</h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email" className="block text-gray-700 mb-2">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            className="w-full p-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
-          <label htmlFor="password" className="block text-gray-700 mb-2 mt-4">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            className="w-full p-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-          {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-700 flex items-center justify-center p-4">
+      <div className="bg-white p-8 shadow-sm border border-gray-200 w-full max-w-md">
+        <div className="flex flex-col items-center mb-8">
+          <img draggable="false" className='w-24 mb-4' src="/grojet.png" alt="Grojet" />
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2">Admin Portal</h1>
+          <p className="text-gray-500">Enter your credentials to access the dashboard</p>
+        </div>
+
+        {error && (
+          <div className="flex items-center gap-2 bg-red-50 text-red-600 p-3  mb-6">
+            <AlertCircle className="w-5 h-5" />
+            <span className="text-sm">{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-1">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Access ID
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Mail className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300  focus:ring-2 focus:ring-green-400 focus:border-green-400 transition-colors"
+                placeholder="ID"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Lock className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300  focus:ring-2 focus:ring-green-400 focus:border-green-400 transition-colors"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
           <button
             type="submit"
-            className="bg-yellow-400 hover:bg-yellow-300 text-white font-semibold py-2 px-4 rounded-lg w-full mt-4"
+            disabled={loading}
+            className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent  shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400 disabled:opacity-70 transition-colors"
           >
-            Login
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin h-5 w-5" />
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <span>Sign in</span>
+            )}
           </button>
         </form>
+
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">
+                Secure admin portal
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }
