@@ -25,7 +25,7 @@ const ToastNotification = ({ message, type, onDismiss }) => {
         }`}
     >
       <div
-        className={`${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center min-w-[300px] max-w-md`}
+        className={`${bgColor} text-white px-4 py-3  shadow-lg flex items-center min-w-[300px] max-w-md`}
       >
         {type === 'success' ? (
           <CheckCircle className="mr-2 flex-shrink-0" size={20} />
@@ -50,19 +50,19 @@ const ConfirmationModal = ({ visible, message, onConfirm, onCancel }) => {
       className="fixed inset-0 flex items-center justify-center p-4"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50"
     >
-      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">
+      <div className="bg-white  shadow-xl p-6 w-full max-w-sm">
         <h2 className="text-xl font-bold text-gray-800 mb-4">Confirm Action</h2>
         <p className="text-gray-600 mb-6">{message}</p>
         <div className="flex justify-end space-x-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-800 transition-colors"
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300  text-gray-800 transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white transition-colors"
+            className="px-4 py-2 bg-red-500 hover:bg-red-600  text-white transition-colors"
           >
             Delete
           </button>
@@ -80,7 +80,7 @@ const EditInput = ({ label, name, value, onChange, type = 'text', disabled }) =>
       <input
         type={type}
         name={name} // ✅ ADD THIS LINE
-        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-green-500"
         value={value || ''}
         onChange={onChange}
         disabled={disabled}
@@ -264,10 +264,10 @@ export default function Inventory() {
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-indigo-700">Inventory Management</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-green-700">Inventory Management</h1>
         <button
           onClick={() => navigate('/admin/add-inventory')}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2 self-end md:self-auto"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2  shadow flex items-center gap-2 self-end md:self-auto"
         >
           <Plus size={18} />
           <span>Add Inventory</span>
@@ -277,20 +277,20 @@ export default function Inventory() {
       {/* Loading/Error State */}
       {loading && (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
           <p className="ml-3 text-gray-600">Loading inventory...</p>
         </div>
       )}
 
       {error && !loading && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-600 text-center">
+        <div className="bg-red-50 border border-red-200  p-4 text-red-600 text-center">
           {error}
         </div>
       )}
 
       {/* Inventory Table */}
       {!loading && !error && (
-        <div className="bg-white rounded-xl shadow overflow-hidden border border-gray-200">
+        <div className="bg-white  shadow overflow-hidden border border-gray-200">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -299,7 +299,6 @@ export default function Inventory() {
                   <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
                   <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase">Stock</th>
                   <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase">Price</th>
-                  <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase">Added At</th>
                   <th className="py-3 px-4 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>
@@ -311,13 +310,10 @@ export default function Inventory() {
                       <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-700">{item.category}</td>
                       <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-700 text-center">{item.stockquantity}</td>
                       <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-700 text-center">₹{item.price.toFixed(2)}</td>
-                      <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                        {new Date(item.addedAt).toLocaleDateString()}
-                      </td>
                       <td className="py-3 px-4 whitespace-nowrap text-center space-x-2">
                         <button
                           onClick={() => openEditModal(item)}
-                          className="text-indigo-600 hover:text-indigo-900 p-1"
+                          className="text-green-600 hover:text-green-900 p-1"
                           title="Edit"
                         >
                           <Edit size={18} />
@@ -352,7 +348,7 @@ export default function Inventory() {
       <Modal
         isOpen={editModalIsOpen}
         onRequestClose={closeEditModal}
-        className="relative bg-white rounded-xl p-6 shadow-xl max-w-md mx-auto my-8"
+        className="relative bg-white  p-6 shadow-xl max-w-md mx-auto my-8"
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">Edit Item</h2>
@@ -397,14 +393,14 @@ export default function Inventory() {
         <div className="flex justify-end space-x-3 mt-6">
           <button
             onClick={closeEditModal}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-800"
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300  text-gray-800"
             disabled={isSaving}
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className={`px-4 py-2 rounded-lg text-white ${isSaving ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'}`}
+            className={`px-4 py-2  text-white ${isSaving ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'}`}
             disabled={isSaving}
           >
             {isSaving ? 'Saving...' : 'Save'}

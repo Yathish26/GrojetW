@@ -58,23 +58,23 @@ export default function Admin() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
-  <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100 w-full max-w-md">
+  <div className="bg-white p-8  shadow-md border border-gray-100 w-full max-w-md">
     <div className="text-center mb-8">
       <h1 className="text-3xl font-bold text-gray-800 mb-2">Admin Dashboard</h1>
       <p className="text-gray-500">Manage your inventory and system settings</p>
     </div>
 
     {/* User Info & Logout */}
-    <div className="flex justify-between items-center mb-8 p-4 bg-gray-50 rounded-lg">
+    <div className="flex justify-between items-center mb-8 p-4 bg-gray-50 ">
       <div className="flex items-center">
-        <div className="bg-indigo-100 p-2 rounded-full mr-3">
-          <User className="text-indigo-600" size={20} />
+        <div className="bg-green-100 p-2 rounded-full mr-3">
+          <User className="text-green-600" size={20} />
         </div>
         <span className="font-medium text-gray-700">Admin</span>
       </div>
       <button 
         onClick={handleLogoutClick}
-        className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+        className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-red-600 bg-red-50  hover:bg-red-100 transition-colors"
       >
         <LogOut size={16} />
         Logout
@@ -82,19 +82,19 @@ export default function Admin() {
     </div>
 
     {/* Stats Card */}
-    <div className="mb-8 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+    <div className="mb-8 p-5 bg-gradient-to-r from-green-50 to-green-50  border border-green-100">
       <div className="flex justify-between items-start mb-3">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">Inventory Summary</h3>
           <p className="text-sm text-gray-500">Current stock overview</p>
         </div>
-        <Package className="text-blue-400" size={20} />
+        <Package className="text-green-400" size={20} />
       </div>
       
       <div className="mt-4">
         {loading && (
           <div className="flex items-center justify-center h-12">
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-green-500"></div>
           </div>
         )}
         {error && (
@@ -113,14 +113,14 @@ export default function Admin() {
     <div className="space-y-3">
       <button
         onClick={handleAddInventoryClick}
-        className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors shadow-sm"
+        className="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4  hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors shadow-sm"
       >
         <Plus size={18} />
         Add New Inventory Item
       </button>
       <button
         onClick={() => navigate('/admin/inventory')}
-        className="w-full flex items-center justify-center gap-2 bg-white text-gray-700 py-3 px-4 rounded-lg border border-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors shadow-sm"
+        className="w-full flex items-center justify-center gap-2 bg-white text-gray-700 py-3 px-4  border border-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors shadow-sm"
       >
         <List size={18} />
         View Full Inventory

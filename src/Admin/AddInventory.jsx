@@ -87,11 +87,11 @@ export default function AddInventory() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
-      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 w-full max-w-md">
+      <div className="bg-white p-6 sm:p-8  shadow-sm border border-gray-200 w-full max-w-md">
         <div className="flex items-center mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-lg hover:bg-gray-100 mr-3 transition-colors"
+            className="p-2  hover:bg-gray-100 mr-3 transition-colors"
           >
             <ArrowLeft className="text-gray-600" size={20} />
           </button>
@@ -102,7 +102,7 @@ export default function AddInventory() {
 
         {message && (
           <div
-            className={`flex items-start p-4 mb-6 rounded-lg border ${message.type === 'success'
+            className={`flex items-start p-4 mb-6  border ${message.type === 'success'
                 ? 'bg-green-50 border-green-200 text-green-700'
                 : 'bg-red-50 border-red-200 text-red-700'
               }`}
@@ -122,7 +122,7 @@ export default function AddInventory() {
                 type="text"
                 id="itemName"
                 name="itemName"
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                 value={formData.itemName}
                 onChange={handleChange}
                 placeholder="Organic Apples"
@@ -141,7 +141,7 @@ export default function AddInventory() {
                 type="number"
                 id="stockQuantity"
                 name="stockQuantity"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2.5 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                 value={formData.stockQuantity}
                 onChange={handleChange}
                 placeholder="100"
@@ -159,7 +159,7 @@ export default function AddInventory() {
                   type="number"
                   id="price"
                   name="price"
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                   value={formData.price}
                   onChange={handleChange}
                   placeholder="2.99"
@@ -179,7 +179,7 @@ export default function AddInventory() {
             <select
               id="category"
               name="category"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none bg-white bg-no-repeat bg-[right_0.75rem_center] bg-[length:1.25rem]"
+              className="w-full px-4 py-2.5 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors appearance-none bg-white bg-no-repeat bg-[right_0.75rem_center] bg-[length:1.25rem]"
               value={formData.category}
               onChange={handleChange}
               required
@@ -196,7 +196,7 @@ export default function AddInventory() {
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed transition-colors shadow-sm"
+            className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4  font-medium focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed transition-colors shadow-sm"
             disabled={loading}
           >
             {loading ? (
