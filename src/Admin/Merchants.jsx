@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Filter, ChevronDown, ChevronUp, Phone, Mail, MapPin, Briefcase } from 'lucide-react';
+import { Search, Filter, ChevronDown, ChevronUp, Phone, Mail, MapPin, Briefcase, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Merchants() {
     const [merchants, setMerchants] = useState([]);
@@ -11,6 +12,14 @@ export default function Merchants() {
         status: 'all'
     });
     const [expandedCard, setExpandedCard] = useState(null);
+    const [pagination, setPagination] = useState({
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPrevPage: false
+    });
 
     const navigate = useNavigate();
 
@@ -22,25 +31,69 @@ export default function Merchants() {
         }
     }, [navigate]);
 
-    useEffect(() => {
+    const fetchMerchants = async (page = 1) => {
         const token = localStorage.getItem('admintoken');
         if (!token) return;
 
-        fetch('http://localhost:5000/merchants/enquiries', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setMerchants(data.merchants || []);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error('Failed to fetch merchants:', err);
-                setLoading(false);
+        try {
+            setLoading(true);
+            const response = await fetch(`http://localhost:5000/admin/merchants/enquiries?page=${page}&limit=${pagination.limit}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
-    }, []);
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                setMerchants(data.merchants || []);
+                setPagination({
+                    page: data.pagination.page,
+                    limit: data.pagination.limit,
+                    total: data.pagination.total,
+                    totalPages: data.pagination.totalPages,
+                    hasNextPage: data.pagination.hasNextPage,
+                    hasPrevPage: data.pagination.hasPrevPage
+                });
+            } else {
+                throw new Error(data.error || 'Failed to fetch merchants');
+            }
+        } catch (err) {
+            console.error('Failed to fetch merchants:', err);
+            toast.error(err.message || 'Failed to load merchant data');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchMerchants(pagination.page);
+    }, [pagination.page]);
+
+    const handleDelete = async (id) => {
+        const token = localStorage.getItem('admintoken');
+        if (!token) return;
+
+        try {
+            const response = await fetch(`http://localhost:5000/admin/merchants/enquiries/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                toast.success('Merchant application deleted successfully');
+                fetchMerchants(pagination.page); // Refresh the list
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to delete merchant');
+            }
+        } catch (err) {
+            console.error('Delete merchant error:', err);
+            toast.error(err.message || 'Failed to delete merchant');
+        }
+    };
 
     const filteredMerchants = merchants.filter(merchant => {
         const matchesSearch = merchant.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -63,8 +116,27 @@ export default function Merchants() {
         setExpandedCard(expandedCard === id ? null : id);
     };
 
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= pagination.totalPages) {
+            setPagination(prev => ({ ...prev, page: newPage }));
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 p-6">
+            <Toaster 
+                position="top-center"
+                toastOptions={{
+                    duration: 4000,
+                    style: {
+                        background: '#fff',
+                        color: '#333',
+                        border: '1px solid #e5e7eb',
+                        padding: '16px',
+                    },
+                }}
+            />
+            
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <h1 className="text-2xl font-bold text-gray-900">Merchant Applications</h1>
@@ -74,21 +146,21 @@ export default function Merchants() {
                             <input
                                 type="text"
                                 placeholder="Search merchants..."
-                                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
-                        <div className="relative">
-                            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50">
+                        <div className="relative group">
+                            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
                                 <Filter size={16} />
                                 <span>Filters</span>
                             </button>
-                            <div className="absolute right-0 mt-1 w-56 bg-white border border-gray-300 shadow-lg z-10 hidden group-hover:block">
+                            <div className="absolute right-0 mt-1 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden group-hover:block">
                                 <div className="p-3 border-b border-gray-200">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
                                     <select
-                                        className="w-full p-2 border border-gray-300"
+                                        className="w-full p-2 border border-gray-300 rounded-md"
                                         value={filters.businessType}
                                         onChange={(e) => setFilters({ ...filters, businessType: e.target.value })}
                                     >
@@ -101,7 +173,7 @@ export default function Merchants() {
                                 <div className="p-3">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                                     <select
-                                        className="w-full p-2 border border-gray-300"
+                                        className="w-full p-2 border border-gray-300 rounded-md"
                                         value={filters.status}
                                         onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                                     >
@@ -120,76 +192,110 @@ export default function Merchants() {
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
                     </div>
                 ) : filteredMerchants.length === 0 ? (
-                    <div className="bg-white p-8 text-center border border-gray-300">
+                    <div className="bg-white p-8 text-center border border-gray-300 rounded-md">
                         <p className="text-gray-500">No merchant applications found matching your criteria</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4">
-                        {filteredMerchants.map((merchant) => (
-                            <div
-                                key={merchant._id}
-                                className={`bg-white border border-gray-300 ${expandedCard === merchant._id ? 'shadow-md' : ''}`}
-                            >
+                    <>
+                        <div className="grid grid-cols-1 gap-4 mb-6">
+                            {filteredMerchants.map((merchant) => (
                                 <div
-                                    className="p-4 hover:bg-gray-50 cursor-pointer flex justify-between items-center"
-                                    onClick={() => toggleExpandCard(merchant._id)}
+                                    key={merchant._id}
+                                    className={`bg-white border border-gray-300 rounded-md ${expandedCard === merchant._id ? 'shadow-md' : ''}`}
                                 >
-                                    <div>
-                                        <h3 className="font-medium text-gray-900">{merchant.businessName}</h3>
-                                        <p className="text-sm text-gray-500">{merchant.businessType}</p>
+                                    <div
+                                        className="p-4 hover:bg-gray-50 cursor-pointer flex justify-between items-center"
+                                        onClick={() => toggleExpandCard(merchant._id)}
+                                    >
+                                        <div>
+                                            <h3 className="font-medium text-gray-900">{merchant.businessName}</h3>
+                                            <p className="text-sm text-gray-500">{merchant.businessType}</p>
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <button 
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (window.confirm('Are you sure you want to delete this merchant application?')) {
+                                                        handleDelete(merchant._id);
+                                                    }
+                                                }}
+                                                className="text-red-500 hover:text-red-700 p-1"
+                                                title="Delete"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
+                                            {expandedCard === merchant._id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-4">
-                                        {expandedCard === merchant._id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                    </div>
-                                </div>
 
-                                {expandedCard === merchant._id && (
-                                    <div className="p-4 border-t border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-3">
-                                            <div className="flex items-start gap-3">
-                                                <Briefcase className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Business</p>
-                                                    <p className="text-gray-900">{merchant.businessName}</p>
-                                                    <p className="text-gray-600 text-sm">{merchant.businessType}</p>
+                                    {expandedCard === merchant._id && (
+                                        <div className="p-4 border-t border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="space-y-3">
+                                                <div className="flex items-start gap-3">
+                                                    <Briefcase className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Business</p>
+                                                        <p className="text-gray-900">{merchant.businessName}</p>
+                                                        <p className="text-gray-600 text-sm">{merchant.businessType}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-start gap-3">
+                                                    <Mail className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Contact</p>
+                                                        <p className="text-gray-900">{merchant.contactPerson}</p>
+                                                        <p className="text-gray-600 text-sm">{merchant.email}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-start gap-3">
-                                                <Mail className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Contact</p>
-                                                    <p className="text-gray-900">{merchant.contactPerson}</p>
-                                                    <p className="text-gray-600 text-sm">{merchant.email}</p>
+                                            <div className="space-y-3">
+                                                <div className="flex items-start gap-3">
+                                                    <Phone className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Phone</p>
+                                                        <p className="text-gray-900">{merchant.phone}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-start gap-3">
+                                                    <MapPin className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Address</p>
+                                                        <p className="text-gray-900">{merchant.address}</p>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            {merchant.message && (
+                                                <div className="md:col-span-2 bg-gray-50 p-3 rounded">
+                                                    <p className="text-sm font-medium text-gray-500 mb-1">Message</p>
+                                                    <p className="text-gray-700 italic">"{merchant.message}"</p>
+                                                </div>
+                                            )}
                                         </div>
-                                        <div className="space-y-3">
-                                            <div className="flex items-start gap-3">
-                                                <Phone className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Phone</p>
-                                                    <p className="text-gray-900">{merchant.phone}</p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-3">
-                                                <MapPin className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Address</p>
-                                                    <p className="text-gray-900">{merchant.address}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {merchant.message && (
-                                            <div className="md:col-span-2 bg-gray-50 p-3">
-                                                <p className="text-sm font-medium text-gray-500 mb-1">Message</p>
-                                                <p className="text-gray-700 italic">"{merchant.message}"</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex justify-between items-center mt-4">
+                            <button
+                                onClick={() => handlePageChange(pagination.page - 1)}
+                                disabled={!pagination.hasPrevPage}
+                                className={`px-4 py-2 border rounded-md ${pagination.hasPrevPage ? 'bg-white hover:bg-gray-50' : 'bg-gray-100 cursor-not-allowed'}`}
+                            >
+                                Previous
+                            </button>
+                            <div className="text-sm text-gray-600">
+                                Page {pagination.page} of {pagination.totalPages}
                             </div>
-                        ))}
-                    </div>
+                            <button
+                                onClick={() => handlePageChange(pagination.page + 1)}
+                                disabled={!pagination.hasNextPage}
+                                className={`px-4 py-2 border rounded-md ${pagination.hasNextPage ? 'bg-white hover:bg-gray-50' : 'bg-gray-100 cursor-not-allowed'}`}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </>
                 )}
             </div>
         </div>

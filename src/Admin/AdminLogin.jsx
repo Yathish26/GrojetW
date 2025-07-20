@@ -25,7 +25,7 @@ export default function AdminLogin() {
     setError(null);
 
     try {
-      const response = await fetch('http://192.168.1.35:5000/admin/login', {
+      const response = await fetch('http://192.168.1.35:5000/admin/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

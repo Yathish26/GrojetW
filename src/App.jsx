@@ -4,11 +4,13 @@ import Home from './Home.jsx'
 import Terms from './Terms.jsx'
 import RegisterBusiness from './RegisterBusiness.jsx'
 import Admin from './Admin/Admin.jsx'
-import AddInventory from './Admin/AddInventory.jsx'
 import AdminLogin from './Admin/AdminLogin.jsx'
-import Inventory from './Admin/Inventory.jsx'
 import PrivacyPolicy from './Privacy.jsx'
 import Merchants from './Admin/Merchants.jsx'
+import Categories from './Admin/Categories.jsx'
+import Products from './Admin/Products.jsx'
+import AddProduct from './Admin/AddProduct.jsx'
+import Users from './Admin/Users.jsx'
 
 function App() {
   return (
@@ -19,10 +21,12 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/register-business" element={<RegisterBusiness />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/add-inventory" element={<AddInventory />} />
+        <Route path="/admin/products/add" element={<AddProduct />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/inventory" element={<Inventory />} />
+        <Route path="/admin/products" element={<Products />} />
         <Route path="/admin/merchants" element={<Merchants />} />
+        <Route path="/admin/categories" element={<Categories />} />
+        <Route path="/admin/users" element={<Users />} />
       </Routes>
     </Router>
   )
