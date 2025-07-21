@@ -100,13 +100,13 @@ export default function Users() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div className="flex items-center mb-4 md:mb-0">
-            <FiUsers className="text-2xl text-indigo-600 mr-2" />
+            <FiUsers className="text-2xl text-green-600 mr-2" />
             <h1 className="text-2xl font-bold text-gray-800">Users Management</h1>
           </div>
 
           <div className="flex items-center space-x-4">
             <div className="bg-white p-3  shadow-sm flex items-center">
-              <FiUser className="text-indigo-500 mr-2" />
+              <FiUser className="text-green-500 mr-2" />
               <span className="text-gray-700">
                 Total Users: <span className="font-bold">{totalUsers}</span>
               </span>
@@ -124,14 +124,14 @@ export default function Users() {
               <input
                 type="text"
                 placeholder="Search users by name or email..."
-                className="pl-10 pr-4 py-2 w-full border border-gray-300  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="pl-10 pr-4 py-2 w-full border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 text-white  hover:bg-indigo-700 transition-colors"
+              className="px-4 py-2 bg-green-600 text-white  hover:bg-green-700 transition-colors"
             >
               Search
             </button>
@@ -142,7 +142,7 @@ export default function Users() {
         <div className="bg-white  shadow-sm overflow-hidden">
           {loading ? (
             <div className="flex justify-center items-center p-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
             </div>
           ) : users.length === 0 ? (
             <div className="p-8 text-center text-gray-500">
@@ -235,7 +235,7 @@ export default function Users() {
                             key={pageNum}
                             onClick={() => paginate(pageNum)}
                             className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === pageNum
-                                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                                ? 'z-10 bg-green-50 border-green-500 text-green-600'
                                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                               }`}
                           >

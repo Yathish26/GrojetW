@@ -126,8 +126,8 @@ export default function RegisterBusiness() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-700 to-green-900 flex flex-col items-center p-4 font-sans text-gray-100">
             <Header />
-            
-            <Toaster 
+
+            <Toaster
                 position="top-center"
                 toastOptions={{
                     className: '',
@@ -148,19 +148,21 @@ export default function RegisterBusiness() {
                 }}
             />
 
-            <main className="w-full max-w-2xl bg-green-800 bg-opacity-70 rounded-xl shadow-lg p-6 md:p-10 mb-8 flex-grow">
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">Register Your Business</h1>
-                <p className="text-center text-gray-200 mb-8">
+            <main className="w-full max-w-2xl bg-green-900 bg-opacity-80 rounded-2xl shadow-2xl p-8 md:p-12 mb-8 flex-grow border border-green-700">
+                <h1 className="text-3xl md:text-4xl font-semibold text-white mb-6 text-center tracking-tight drop-shadow-lg">
+                    Register Your Business
+                </h1>
+                <p className="text-center text-gray-200 mb-8 text-base md:text-lg">
                     Partner with us to reach more customers and grow your business!
                 </p>
 
                 {!showForm && (
-                    <div className="bg-green-700 bg-opacity-80 rounded-lg p-6 mb-10 shadow-inner border border-green-600">
-                        <h2 className="text-2xl font-semibold text-yellow-300 mb-4 text-center">Who Can Register?</h2>
-                        <p className="text-gray-100 text-lg leading-relaxed text-center">
+                    <div className="bg-gradient-to-r from-green-800 via-green-700 to-green-900 rounded-xl p-8 mb-10 shadow-lg border border-green-600">
+                        <h2 className="text-xl font-semibold text-yellow-300 mb-4 text-center">Who Can Register?</h2>
+                        <p className="text-gray-100 text-base leading-relaxed text-center">
                             We welcome businesses that sell:
                         </p>
-                        <ul className="list-disc list-inside text-gray-200 text-lg mt-4 space-y-2 px-4">
+                        <ul className="list-disc list-inside text-gray-200 text-base mt-4 space-y-2 px-4">
                             <li>Fresh groceries and produce</li>
                             <li>Essential home products</li>
                             <li>Daily household items</li>
@@ -169,7 +171,7 @@ export default function RegisterBusiness() {
                         <div className="flex justify-center mt-8">
                             <button
                                 onClick={scrollToForm}
-                                className="bg-yellow-400 text-green-900 font-bold py-3 px-8 rounded-xl text-lg shadow-xl hover:bg-yellow-300 transition-all duration-300"
+                                className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-green-900 font-semibold py-3 px-10 rounded-full text-base shadow-xl hover:scale-105 hover:bg-yellow-300 transition-all duration-300"
                             >
                                 Register Now
                             </button>
@@ -178,108 +180,121 @@ export default function RegisterBusiness() {
                 )}
 
                 {showForm && (
-                    <form id="registration-form" className="space-y-6" onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor="businessName" className="block text-gray-200 text-lg font-medium mb-2">
-                                Business Name*
-                            </label>
-                            <input
-                                type="text"
-                                id="businessName"
-                                value={businessName}
-                                onChange={(e) => setBusinessName(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="Your business name"
-                                required
-                                disabled={loading}
-                            />
+                    <form
+                        id="registration-form"
+                        className="space-y-8 bg-green-800 bg-opacity-60 rounded-xl p-8 shadow-lg border border-green-700"
+                        onSubmit={handleSubmit}
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label htmlFor="businessName" className="block text-gray-200 text-base font-medium mb-2">
+                                    Business Name<span className="text-yellow-400">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="businessName"
+                                    value={businessName}
+                                    onChange={(e) => setBusinessName(e.target.value)}
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                    placeholder="Business name"
+                                    required
+                                    disabled={loading}
+                                    maxLength={50}
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="contactPerson" className="block text-gray-200 text-base font-medium mb-2">
+                                    Contact Person<span className="text-yellow-400">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="contactPerson"
+                                    value={contactPerson}
+                                    onChange={(e) => setContactPerson(e.target.value)}
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                    placeholder="Contact person's name"
+                                    required
+                                    disabled={loading}
+                                    maxLength={40}
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="email" className="block text-gray-200 text-base font-medium mb-2">
+                                    Business Email<span className="text-yellow-400">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                    placeholder="your@email.com"
+                                    required
+                                    disabled={loading}
+                                    maxLength={60}
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="phone" className="block text-gray-200 text-base font-medium mb-2">
+                                    Phone Number<span className="text-yellow-400">*</span>
+                                </label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                    placeholder="e.g. +91 98765 43210"
+                                    required
+                                    disabled={loading}
+                                    maxLength={15}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label htmlFor="businessType" className="block text-gray-200 text-base font-medium mb-2">
+                                    Business Type<span className="text-yellow-400">*</span>
+                                </label>
+                                <select
+                                    id="businessType"
+                                    value={businessType}
+                                    onChange={(e) => setBusinessType(e.target.value)}
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                    required
+                                    disabled={loading}
+                                >
+                                    <option value="">Select business type</option>
+                                    {businessTypes.map((type, index) => (
+                                        <option key={index} value={type}>{type}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label htmlFor="address" className="block text-gray-200 text-base font-medium mb-2">
+                                    Business Address<span className="text-yellow-400">*</span>
+                                </label>
+                                <textarea
+                                    id="address"
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                    rows="3"
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                    placeholder="Street, City, State, PIN"
+                                    required
+                                    disabled={loading}
+                                    maxLength={100}
+                                />
+                            </div>
                         </div>
 
                         <div>
-                            <label htmlFor="contactPerson" className="block text-gray-200 text-lg font-medium mb-2">
-                                Contact Person*
-                            </label>
-                            <input
-                                type="text"
-                                id="contactPerson"
-                                value={contactPerson}
-                                onChange={(e) => setContactPerson(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="Your name"
-                                required
-                                disabled={loading}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="email" className="block text-gray-200 text-lg font-medium mb-2">
-                                Business Email*
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="contact@yourbusiness.com"
-                                required
-                                disabled={loading}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="phone" className="block text-gray-200 text-lg font-medium mb-2">
-                                Phone Number*
-                            </label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="+1 (___) ___-____"
-                                required
-                                disabled={loading}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="businessType" className="block text-gray-200 text-lg font-medium mb-2">
-                                Business Type*
-                            </label>
-                            <select
-                                id="businessType"
-                                value={businessType}
-                                onChange={(e) => setBusinessType(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                required
-                                disabled={loading}
-                            >
-                                <option value="">Select your business type</option>
-                                {businessTypes.map((type, index) => (
-                                    <option key={index} value={type}>{type}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label htmlFor="address" className="block text-gray-200 text-lg font-medium mb-2">
-                                Business Address*
-                            </label>
-                            <textarea
-                                id="address"
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
-                                rows="3"
-                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="Street, City, State, ZIP Code"
-                                required
-                                disabled={loading}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="message" className="block text-gray-200 text-lg font-medium mb-2">
+                            <label htmlFor="message" className="block text-gray-200 text-base font-medium mb-2">
                                 Additional Information
                             </label>
                             <textarea
@@ -287,15 +302,16 @@ export default function RegisterBusiness() {
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 rows="4"
-                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="Tell us more about your business..."
+                                className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                placeholder="Anything else you'd like to share?"
                                 disabled={loading}
+                                maxLength={200}
                             />
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full bg-yellow-400 text-green-900 font-bold py-3 px-8 rounded-xl text-lg shadow-xl hover:bg-yellow-300 transition-all duration-300 flex items-center justify-center"
+                            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-green-900 font-semibold py-3 px-8 rounded-full text-base shadow-xl hover:scale-105 hover:bg-yellow-300 transition-all duration-300 flex items-center justify-center"
                             disabled={loading}
                         >
                             {loading ? (

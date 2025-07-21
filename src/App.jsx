@@ -11,6 +11,7 @@ import Categories from './Admin/Categories.jsx'
 import Products from './Admin/Products.jsx'
 import AddProduct from './Admin/AddProduct.jsx'
 import Users from './Admin/Users.jsx'
+import Error404 from './Error404.jsx'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/admin/merchants" element={<Merchants />} />
         <Route path="/admin/categories" element={<Categories />} />
         <Route path="/admin/users" element={<Users />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>
   )
