@@ -15,7 +15,7 @@ export default function Home() {
             Fresh Groceries to <br className="hidden sm:block" /> your Door, <span className="text-yellow-400">Grojet It!</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-md animate-fade-in-up">
-            Experience the freshest produce and daily essentials delivered right to your doorstep. Convenience redefined.
+            Experience the taste of Mangalore with our carefully curated local items and homemade essentials delivered right to your doorstep. Grojet is the perfect blend of local love and convenience.
           </p>
           {/* Pre-register buttons */}
           <div className="flex space-x-4 animate-bounce-once">
@@ -42,11 +42,12 @@ export default function Home() {
         <div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg mx-auto md:w-1/2 flex justify-center items-center">
           <img
             src="https://media-public.canva.com/-WRIo/MAFmO--WRIo/1/s.png"
+            draggable="false"
             alt="Groceries in a phone"
             className="w-65 max-md:w-40 h-auto rounded-3xl transform -rotate-3 hover:rotate-0 transition-transform duration-300 ease-in-out"
             style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.3))' }}
           />
-          <img className="absolute top-0 right-0 w-30 max-sm:w-20 rotate-20 h-auto transform animate-pulse-slow" src="https://media-public.canva.com/JTF0c/MAGYaYJTF0c/1/tl.png" alt="Coming Soon" />
+          <img draggable="false" className="absolute top-0 right-0 w-30 max-sm:w-20 rotate-20 h-auto transform animate-pulse-slow" src="https://media-public.canva.com/JTF0c/MAGYaYJTF0c/1/tl.png" alt="Coming Soon" />
         </div>
       </main>
 

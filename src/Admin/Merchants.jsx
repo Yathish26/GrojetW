@@ -127,7 +127,7 @@ export default function Merchants() {
             <Toaster 
                 position="top-center"
                 toastOptions={{
-                    duration: 4000,
+                    duration: 2000,
                     style: {
                         background: '#fff',
                         color: '#333',

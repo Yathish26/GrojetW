@@ -10,6 +10,7 @@ export default function Header() {
                 <img
                     src="/grojet.png"
                     alt="Grojet Logo"
+                    draggable="false"
                     className="h-16 md:h-17 mr-3 rounded-lg"
                     style={{ filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))' }}
                 />
