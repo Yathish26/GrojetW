@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import toast, { Toaster } from 'react-hot-toast';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { XCircle } from 'lucide-react';
 
 export default function RegisterBusiness() {
     const [showForm, setShowForm] = useState(false);
@@ -49,7 +49,7 @@ export default function RegisterBusiness() {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5000/merchants', {
+            const response = await fetch(`${import.meta.env.VITE_SERVER}/merchants`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Package, Plus, ArrowLeft, Loader2, XCircle, CircleCheck, Image, Tag, Scale, Box, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import ChipInput from '../Components/ChipInput';
 
 export default function AddProduct() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function AddProduct() {
     images: [''],
     thumbnail: '',
     brand: '',
-    categories: '',
+    category: '',
     sku: '',
     barcode: '',
     variants: [{
@@ -48,7 +49,7 @@ export default function AddProduct() {
     tags: [],
     searchKeywords: ['']
   });
-  
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -75,12 +76,12 @@ export default function AddProduct() {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://192.168.1.35:5000/admin/categories', {
+        const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         if (!response.ok) throw new Error('Failed to fetch categories');
-        
+
         const data = await response.json();
         setCategories(data.categories || []);
       } catch (error) {
@@ -132,7 +133,7 @@ export default function AddProduct() {
     setFormData(prev => {
       const newVariants = [...prev.variants];
       newVariants[index] = { ...newVariants[index], [field]: value };
-      
+
       // Auto-calculate discount if both MRP and price are set
       if (field === 'price' && newVariants[index].mrp > 0) {
         newVariants[index].discountPercent = Math.round(
@@ -143,7 +144,7 @@ export default function AddProduct() {
           ((parseFloat(value) - newVariants[index].price) / parseFloat(value) * 100)
         );
       }
-      
+
       return { ...prev, variants: newVariants };
     });
   };
@@ -178,12 +179,12 @@ export default function AddProduct() {
     if (e.target.checked) {
       setFormData(prev => ({
         ...prev,
-        categories: [...prev.categories, selectedId]
+        category: [...prev.category, selectedId]
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        categories: prev.categories.filter(id => id !== selectedId)
+        category: prev.category.filter(id => id !== selectedId)
       }));
     }
   };
@@ -222,7 +223,7 @@ export default function AddProduct() {
     };
 
     try {
-      const response = await fetch('http://192.168.1.35:5000/admin/products', {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -243,7 +244,7 @@ export default function AddProduct() {
           images: [''],
           thumbnail: '',
           brand: '',
-          categories: '',
+          category: '',
           sku: '',
           barcode: '',
           variants: [{
@@ -293,7 +294,7 @@ export default function AddProduct() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-start justify-center p-4 font-sans">
       <Toaster position="top-center" />
-      
+
       <div className="bg-white p-6 shadow-sm border border-gray-200 w-full max-w-6xl mx-4 my-8">
         <div className="flex items-center mb-6">
           <button
@@ -312,7 +313,7 @@ export default function AddProduct() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Basic Information</h3>
-              
+
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
                   Product Name *
@@ -345,47 +346,20 @@ export default function AddProduct() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Highlights
-                </label>
-                {formData.highlights.map((highlight, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        className="w-full px-4 py-2.5 border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        value={highlight}
-                        onChange={(e) => handleArrayChange('highlights', index, e.target.value)}
-                        placeholder="Product highlight"
-                      />
-                    </div>
-                    {formData.highlights.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeArrayItem('highlights', index)}
-                        className="p-2 text-red-500 hover:bg-red-50 transition-colors"
-                      >
-                        <XCircle size={18} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => addArrayItem('highlights')}
-                  className="flex items-center text-sm text-green-600 hover:text-green-700 mt-2"
-                >
-                  <Plus size={16} className="mr-1" />
-                  Add another highlight
-                </button>
-              </div>
+              <ChipInput
+                label="Highlights"
+                values={formData.highlights}
+                setValues={vals => setFormData(prev => ({ ...prev, highlights: vals }))}
+                disabled={loading}
+                placeholder="Add highlight and press Enter or comma"
+                maxTags={3}
+              />
             </div>
 
             {/* Images and Brand */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Media</h3>
-              
+
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
                   Thumbnail Image URL *
@@ -460,7 +434,7 @@ export default function AddProduct() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Category</h3>
-              
+
               {loadingCategories ? (
                 <p>Loading categories...</p>
               ) : (
@@ -487,7 +461,7 @@ export default function AddProduct() {
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Inventory</h3>
-              
+
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
                   SKU (Stock Keeping Unit) *
@@ -559,7 +533,7 @@ export default function AddProduct() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Pricing</h3>
-              
+
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
                   MRP (Maximum Retail Price) *
@@ -634,7 +608,7 @@ export default function AddProduct() {
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Tax & Delivery</h3>
-              
+
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
                   GST Rate (%)
@@ -745,7 +719,7 @@ export default function AddProduct() {
           {/* Variants */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Product Variants</h3>
-            
+
             {formData.variants.map((variant, index) => (
               <div key={index} className="border border-gray-200 p-4 rounded-lg space-y-4">
                 <div className="flex justify-between items-center">
@@ -761,7 +735,7 @@ export default function AddProduct() {
                     </button>
                   )}
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
@@ -773,10 +747,9 @@ export default function AddProduct() {
                       value={variant.label}
                       onChange={(e) => handleVariantChange(index, 'label', e.target.value)}
                       placeholder="e.g. 1kg Pack"
-                      required
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Unit *
@@ -785,14 +758,13 @@ export default function AddProduct() {
                       className="w-full px-4 py-2.5 border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       value={variant.unit}
                       onChange={(e) => handleVariantChange(index, 'unit', e.target.value)}
-                      required
                     >
                       {unitOptions.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                       ))}
                     </select>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       MRP *
@@ -804,14 +776,13 @@ export default function AddProduct() {
                         value={variant.mrp}
                         onChange={(e) => handleVariantChange(index, 'mrp', e.target.value)}
                         placeholder="e.g. 299"
-                        required
                         min="0"
                         step="0.01"
                       />
                       <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Selling Price *
@@ -823,14 +794,13 @@ export default function AddProduct() {
                         value={variant.price}
                         onChange={(e) => handleVariantChange(index, 'price', e.target.value)}
                         placeholder="e.g. 249"
-                        required
                         min="0"
                         step="0.01"
                       />
                       <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Stock *
@@ -841,11 +811,10 @@ export default function AddProduct() {
                       value={variant.stock}
                       onChange={(e) => handleVariantChange(index, 'stock', e.target.value)}
                       placeholder="e.g. 100"
-                      required
                       min="0"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Image URL
@@ -864,7 +833,7 @@ export default function AddProduct() {
                 </div>
               </div>
             ))}
-            
+
             <button
               type="button"
               onClick={addVariant}
@@ -879,67 +848,28 @@ export default function AddProduct() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Tags & Keywords</h3>
-              
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Tags
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="tags"
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    value={formData.tags.join(', ')}
-                    onChange={(e) => {
-                      const tagsArray = e.target.value.split(',').map(tag => tag.trim());
-                      setFormData(prev => ({ ...prev, tags: tagsArray }));
-                    }}
-                    placeholder="e.g. organic, fresh, premium"
-                  />
-                  <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                </div>
-                <p className="text-xs text-gray-500">Separate tags with commas</p>
-              </div>
+
+              <ChipInput
+                label="Tags"
+                values={formData.tags}
+                setValues={vals => setFormData(prev => ({ ...prev, tags: vals }))}
+                disabled={loading}
+                placeholder="Add tag and press Enter or comma"
+                maxTags={10}
+              />
             </div>
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Search Keywords</h3>
-              
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Keywords
-                </label>
-                {formData.searchKeywords.map((keyword, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        className="w-full px-4 py-2.5 border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        value={keyword}
-                        onChange={(e) => handleArrayChange('searchKeywords', index, e.target.value)}
-                        placeholder="e.g. fresh apples"
-                      />
-                    </div>
-                    {formData.searchKeywords.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeArrayItem('searchKeywords', index)}
-                        className="p-2 text-red-500 hover:bg-red-50 transition-colors"
-                      >
-                        <XCircle size={18} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => addArrayItem('searchKeywords')}
-                  className="flex items-center text-sm text-green-600 hover:text-green-700 mt-2"
-                >
-                  <Plus size={16} className="mr-1" />
-                  Add another keyword
-                </button>
-              </div>
+
+              <ChipInput
+                label="Search Keywords"
+                values={formData.searchKeywords}
+                setValues={vals => setFormData(prev => ({ ...prev, searchKeywords: vals }))}
+                disabled={loading}
+                placeholder="Add keyword and press Enter or comma"
+                maxTags={10}
+              />
             </div>
           </div>
 
@@ -947,7 +877,7 @@ export default function AddProduct() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Status</h3>
-              
+
               <div className="flex items-center space-x-4">
                 <div className="flex items-center">
                   <input
@@ -962,7 +892,7 @@ export default function AddProduct() {
                     Active
                   </label>
                 </div>
-                
+
                 <div className="flex items-center">
                   <input
                     type="checkbox"

@@ -24,7 +24,7 @@ export default function Users() {
       }
 
       const response = await fetch(
-        `http://localhost:5000/admin/users?page=${currentPage}`,
+        `${import.meta.env.VITE_SERVER}/admin/users?page=${currentPage}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -54,7 +54,7 @@ export default function Users() {
       }
 
       const response = await fetch(
-        'http://localhost:5000/admin/users/count',
+        `${import.meta.env.VITE_SERVER}/admin/users/count`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -105,7 +105,7 @@ export default function Users() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <div className="bg-white p-3 rounded-lg shadow-sm flex items-center">
+            <div className="bg-white p-3  shadow-sm flex items-center">
               <FiUser className="text-indigo-500 mr-2" />
               <span className="text-gray-700">
                 Total Users: <span className="font-bold">{totalUsers}</span>
@@ -115,7 +115,7 @@ export default function Users() {
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
+        <div className="bg-white p-4  shadow-sm mb-6">
           <form onSubmit={handleSearch} className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
             <div className="relative flex-grow">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -124,14 +124,14 @@ export default function Users() {
               <input
                 type="text"
                 placeholder="Search users by name or email..."
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="pl-10 pr-4 py-2 w-full border border-gray-300  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="px-4 py-2 bg-indigo-600 text-white  hover:bg-indigo-700 transition-colors"
             >
               Search
             </button>
@@ -139,7 +139,7 @@ export default function Users() {
         </div>
 
         {/* Users Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-white  shadow-sm overflow-hidden">
           {loading ? (
             <div className="flex justify-center items-center p-12">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
@@ -172,7 +172,7 @@ export default function Users() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">{user.email}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 whitespace-nowrap flex items-center">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.status
                               ? 'bg-green-100 text-green-800'
                               : 'bg-red-100 text-red-800'
@@ -207,11 +207,11 @@ export default function Users() {
                     </p>
                   </div>
                   <div>
-                    <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    <nav className="relative z-0 inline-flex  shadow-sm -space-x-px" aria-label="Pagination">
                       <button
                         onClick={() => paginate(Math.max(1, currentPage - 1))}
                         disabled={currentPage === 1}
-                        className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
+                        className={`relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
                           }`}
                       >
                         <span className="sr-only">Previous</span>
@@ -247,7 +247,7 @@ export default function Users() {
                       <button
                         onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
                         disabled={currentPage === totalPages}
-                        className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
+                        className={`relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
                           }`}
                       >
                         <span className="sr-only">Next</span>

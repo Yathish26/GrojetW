@@ -19,7 +19,7 @@ export default function Admin() {
 
         const fetchInventoryCount = async () => {
             try {
-                const response = await fetch('http://192.168.1.35:5000/products/count', {
+                const response = await fetch(`${import.meta.env.VITE_SERVER}/products/count`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

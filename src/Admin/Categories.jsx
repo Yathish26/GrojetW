@@ -10,9 +10,9 @@ import {
   Loader2,
   Star,
   ListOrdered,
-  Search, // Added Search icon
-  Filter, // Added Filter icon
-  RotateCcw, // Added reset icon
+  Search,
+  Filter,
+  RotateCcw,
   CircleCheck
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -38,12 +38,8 @@ export default function Categories() {
     "Beauty & Personal Care",
     "Household Essentials",
     "Health & Wellness",
-    "Electronics & Gadgets", // Added more main categories for better demonstration
-    "Clothing & Apparel",
-    "Books & Stationery",
-    "Home & Decor",
-    "Sports & Outdoors"
-  ];
+  ]
+
 
   // Form states
   const [formData, setFormData] = useState({
@@ -65,7 +61,7 @@ export default function Categories() {
         return;
       }
 
-      const response = await fetch('http://192.168.1.35:5000/admin/categories', {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -131,7 +127,7 @@ export default function Categories() {
         return;
       }
 
-      const endpoint = 'http://192.168.1.35:5000/admin/categories';
+      const endpoint = `${import.meta.env.VITE_SERVER}/admin/categories`;
       const method = editingCategory ? 'PUT' : 'POST';
       const url = editingCategory ? `${endpoint}/${editingCategory}` : endpoint;
 
@@ -188,7 +184,7 @@ export default function Categories() {
         return;
       }
 
-      const response = await fetch(`http://192.168.1.35:5000/admin/categories/${categoryToDelete._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories/${categoryToDelete._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -278,7 +274,7 @@ export default function Categories() {
     }
 
     return (
-      <div className="overflow-x-auto rounded-lg shadow-sm">
+      <div className="overflow-x-auto  shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -313,7 +309,7 @@ export default function Categories() {
                       <img
                         src={category.image}
                         alt={category.name}
-                        className="h-8 w-8 mr-1 rounded-md object-cover"
+                        className="h-8 w-8 mr-1  object-cover"
                         onError={(e) => {
                           e.target.src = `https://placehold.co/32x32/E0E0E0/888888?text=N/A`;
                         }}
@@ -373,7 +369,7 @@ export default function Categories() {
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 font-sans">
       <Toaster position="top-center" />
 
-      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+      <div className="bg-white border border-gray-200  overflow-hidden shadow-sm">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
           <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Categories Management</h2>
@@ -392,7 +388,7 @@ export default function Categories() {
                 });
                 setIsModalOpen(true);
               }}
-              className="flex items-center px-4 py-2 bg-green-600 text-white font-semibold hover:bg-green-700 rounded-md shadow-sm transition-colors duration-200"
+              className="flex items-center px-4 py-2 bg-green-600 text-white font-semibold hover:bg-green-700  shadow-sm transition-colors duration-200"
             >
               <Plus size={18} className="mr-2" />
               Add Category
@@ -414,7 +410,7 @@ export default function Categories() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search category name..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm"
               />
             </div>
 
@@ -427,7 +423,7 @@ export default function Categories() {
                 id="filterMainCategory"
                 value={filterMainCategory}
                 onChange={(e) => setFilterMainCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
               >
                 <option value="">All Main Categories</option>
                 {mainCategories.map((category, index) => (
@@ -447,7 +443,7 @@ export default function Categories() {
                 id="filterIsActive"
                 value={filterIsActive}
                 onChange={(e) => setFilterIsActive(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
               >
                 <option value="all">All Statuses</option>
                 <option value="true">Active</option>
@@ -464,7 +460,7 @@ export default function Categories() {
                 id="filterShowOnHome"
                 value={filterShowOnHome}
                 onChange={(e) => setFilterShowOnHome(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
               >
                 <option value="all">All Homepage Statuses</option>
                 <option value="true">Show on Home</option>
@@ -476,7 +472,7 @@ export default function Categories() {
             <div className="md:col-span-2 lg:col-span-4 flex justify-end">
               <button
                 onClick={handleResetFilters}
-                className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 rounded-md shadow-sm transition-colors duration-200"
+                className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300  shadow-sm transition-colors duration-200"
               >
                 <RotateCcw size={16} className="mr-2" />
                 Reset Filters
@@ -494,7 +490,7 @@ export default function Categories() {
       {/* Add/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-white/60  flex items-center justify-center p-4 z-50">
-          <div className="bg-white w-full max-w-2xl rounded-lg shadow-xl animate-fade-in-up">
+          <div className="bg-white w-full max-w-2xl  shadow-xl animate-fade-in-up">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-xl font-bold text-gray-800">
                 {editingCategory ? 'Edit Category' : 'Add New Category'}
@@ -520,7 +516,7 @@ export default function Categories() {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     required
                   />
                 </div>
@@ -534,7 +530,7 @@ export default function Categories() {
                     name="mainCategory"
                     value={formData.mainCategory}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
                     required
                   >
                     <option value="">Select a main category</option>
@@ -556,16 +552,16 @@ export default function Categories() {
                     name="image"
                     value={formData.image}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     placeholder="https://example.com/image.jpg"
                   />
                   {formData.image && (
-                    <div className="mt-2 p-2 border border-gray-200 rounded-md bg-gray-50 flex items-center">
+                    <div className="mt-2 p-2 border border-gray-200  bg-gray-50 flex items-center">
                       <span className="text-xs text-gray-500 mr-2">Preview:</span>
                       <img
                         src={formData.image}
                         alt="Preview"
-                        className="max-h-20 max-w-full object-contain rounded-md shadow-sm"
+                        className="max-h-20 max-w-full object-contain  shadow-sm"
                         onError={(e) => {
                           e.target.src = 'https://placehold.co/100x50/E0E0E0/888888?text=Image+Error';
                         }}
@@ -584,7 +580,7 @@ export default function Categories() {
                     name="order"
                     value={formData.order}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
@@ -596,7 +592,7 @@ export default function Categories() {
                       name="isActive"
                       checked={formData.isActive}
                       onChange={handleInputChange}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 rounded border-gray-300"
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                     />
                     <label htmlFor="isActive" className="ml-2 text-sm text-gray-700 cursor-pointer">
                       Active
@@ -610,7 +606,7 @@ export default function Categories() {
                       name="showOnHome"
                       checked={formData.showOnHome}
                       onChange={handleInputChange}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 rounded border-gray-300"
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                     />
                     <label htmlFor="showOnHome" className="ml-2 text-sm text-gray-700 cursor-pointer">
                       Show on Homepage
@@ -623,14 +619,14 @@ export default function Categories() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                  className="px-4 py-2 border border-gray-300  text-gray-700 hover:bg-gray-50 transition-colors duration-200 shadow-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-70 flex items-center justify-center transition-colors duration-200 shadow-sm"
+                  className="px-4 py-2 bg-blue-600 text-white  hover:bg-blue-700 disabled:opacity-70 flex items-center justify-center transition-colors duration-200 shadow-sm"
                 >
                   {loading && <Loader2 className="animate-spin mr-2" size={18} />}
                   {editingCategory ? 'Update' : 'Add'}
@@ -644,7 +640,7 @@ export default function Categories() {
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && categoryToDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-          <div className="bg-white w-full max-w-md rounded-lg shadow-xl animate-fade-in-up">
+          <div className="bg-white w-full max-w-md  shadow-xl animate-fade-in-up">
             <div className="p-6">
               <h3 className="text-xl font-bold mb-4 text-gray-800">Confirm Deletion</h3>
               <p className="text-gray-700 mb-6">
@@ -653,14 +649,14 @@ export default function Categories() {
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setIsDeleteModalOpen(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                  className="px-4 py-2 border border-gray-300  text-gray-700 hover:bg-gray-50 transition-colors duration-200 shadow-sm"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={loading}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-70 flex items-center justify-center transition-colors duration-200 shadow-sm"
+                  className="px-4 py-2 bg-red-600 text-white  hover:bg-red-700 disabled:opacity-70 flex items-center justify-center transition-colors duration-200 shadow-sm"
                 >
                   {loading && <Loader2 className="animate-spin mr-2" size={18} />}
                   Delete

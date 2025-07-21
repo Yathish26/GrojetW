@@ -37,7 +37,7 @@ export default function Merchants() {
 
         try {
             setLoading(true);
-            const response = await fetch(`http://localhost:5000/admin/merchants/enquiries?page=${page}&limit=${pagination.limit}`, {
+            const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/merchants/enquiries?page=${page}&limit=${pagination.limit}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -75,7 +75,7 @@ export default function Merchants() {
         if (!token) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/admin/merchants/enquiries/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/merchants/enquiries/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -146,21 +146,21 @@ export default function Merchants() {
                             <input
                                 type="text"
                                 placeholder="Search merchants..."
-                                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
                         <div className="relative group">
-                            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300  hover:bg-gray-50">
                                 <Filter size={16} />
                                 <span>Filters</span>
                             </button>
-                            <div className="absolute right-0 mt-1 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden group-hover:block">
+                            <div className="absolute right-0 mt-1 w-56 bg-white border border-gray-300  shadow-lg z-10 hidden group-hover:block">
                                 <div className="p-3 border-b border-gray-200">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
                                     <select
-                                        className="w-full p-2 border border-gray-300 rounded-md"
+                                        className="w-full p-2 border border-gray-300 "
                                         value={filters.businessType}
                                         onChange={(e) => setFilters({ ...filters, businessType: e.target.value })}
                                     >
@@ -173,7 +173,7 @@ export default function Merchants() {
                                 <div className="p-3">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                                     <select
-                                        className="w-full p-2 border border-gray-300 rounded-md"
+                                        className="w-full p-2 border border-gray-300 "
                                         value={filters.status}
                                         onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                                     >
@@ -192,7 +192,7 @@ export default function Merchants() {
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
                     </div>
                 ) : filteredMerchants.length === 0 ? (
-                    <div className="bg-white p-8 text-center border border-gray-300 rounded-md">
+                    <div className="bg-white p-8 text-center border border-gray-300 ">
                         <p className="text-gray-500">No merchant applications found matching your criteria</p>
                     </div>
                 ) : (
@@ -201,7 +201,7 @@ export default function Merchants() {
                             {filteredMerchants.map((merchant) => (
                                 <div
                                     key={merchant._id}
-                                    className={`bg-white border border-gray-300 rounded-md ${expandedCard === merchant._id ? 'shadow-md' : ''}`}
+                                    className={`bg-white border border-gray-300  ${expandedCard === merchant._id ? 'shadow-md' : ''}`}
                                 >
                                     <div
                                         className="p-4 hover:bg-gray-50 cursor-pointer flex justify-between items-center"
@@ -280,7 +280,7 @@ export default function Merchants() {
                             <button
                                 onClick={() => handlePageChange(pagination.page - 1)}
                                 disabled={!pagination.hasPrevPage}
-                                className={`px-4 py-2 border rounded-md ${pagination.hasPrevPage ? 'bg-white hover:bg-gray-50' : 'bg-gray-100 cursor-not-allowed'}`}
+                                className={`px-4 py-2 border  ${pagination.hasPrevPage ? 'bg-white hover:bg-gray-50' : 'bg-gray-100 cursor-not-allowed'}`}
                             >
                                 Previous
                             </button>
@@ -290,7 +290,7 @@ export default function Merchants() {
                             <button
                                 onClick={() => handlePageChange(pagination.page + 1)}
                                 disabled={!pagination.hasNextPage}
-                                className={`px-4 py-2 border rounded-md ${pagination.hasNextPage ? 'bg-white hover:bg-gray-50' : 'bg-gray-100 cursor-not-allowed'}`}
+                                className={`px-4 py-2 border  ${pagination.hasNextPage ? 'bg-white hover:bg-gray-50' : 'bg-gray-100 cursor-not-allowed'}`}
                             >
                                 Next
                             </button>
