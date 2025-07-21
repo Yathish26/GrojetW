@@ -23,7 +23,7 @@ export default function Header() {
                     text-white
                    ">
                     <li>
-                        <Link to="/terms-and-conditions" className="hover:text-yellow-300 transition-colors duration-200">Terms & Conditions</Link>
+                        <Link to="/terms" className="hover:text-yellow-300 transition-colors duration-200">Terms & Conditions</Link>
                     </li>
                     <li>
                         <Link to="/privacy-policy" className="hover:text-yellow-300 transition-colors duration-200">Privacy Policy</Link>
