@@ -10,6 +10,7 @@ export default function RegisterBusiness() {
     const [contactPerson, setContactPerson] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [alternatePhone, setAlternatePhone] = useState('');
     const [businessType, setBusinessType] = useState('');
     const [address, setAddress] = useState('');
     const [message, setMessage] = useState('');
@@ -59,6 +60,7 @@ export default function RegisterBusiness() {
                     contactPerson,
                     email,
                     phone,
+                    alternatePhone,
                     businessType,
                     address,
                     message,
@@ -74,7 +76,7 @@ export default function RegisterBusiness() {
             }
 
             const data = await response.json();
-            
+
             toast.success(data.message || 'Registration successful! We will contact you shortly.', {
                 duration: 3000,
                 style: {
@@ -90,6 +92,7 @@ export default function RegisterBusiness() {
             setContactPerson('');
             setEmail('');
             setPhone('');
+            setAlternatePhone('');
             setBusinessType('');
             setAddress('');
             setMessage('');
@@ -253,6 +256,21 @@ export default function RegisterBusiness() {
                                     maxLength={15}
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="alternatePhone" className="block text-gray-200 text-base font-medium mb-2">
+                                    Alternate Phone Number
+                                    <span className="text-sm font-light "> (optional)</span>
+                                </label>
+                                <input
+                                    type="tel"
+                                    id="alternatePhone"
+                                    value={alternatePhone}
+                                    onChange={(e) => setAlternatePhone(e.target.value)}
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                                    placeholder="e.g. +91 98765 43210"
+                                    maxLength={15}
+                                />
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -277,19 +295,31 @@ export default function RegisterBusiness() {
 
                             <div>
                                 <label htmlFor="address" className="block text-gray-200 text-base font-medium mb-2">
-                                    Business Address<span className="text-yellow-400">*</span>
+                                    Region<span className="text-yellow-400">*</span>
                                 </label>
-                                <textarea
+                                <select
                                     id="address"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
-                                    rows="3"
-                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
-                                    placeholder="Street, City, State, PIN"
+                                    className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
                                     required
                                     disabled={loading}
-                                    maxLength={100}
-                                />
+                                >
+                                    <option value="">Select Region</option>
+                                    <optgroup label="Udupi">
+                                        <option value="Udupi">Udupi</option>
+                                        <option value="Kundapura">Kundapura</option>
+                                        <option value="Karkala">Karkala</option>
+                                    </optgroup>
+                                    <optgroup label="Dakshina Kannada">
+                                        <option value="Mangalore">Mangalore</option>
+                                        <option value="Bantwal">Bantwal</option>
+                                        <option value="Puttur">Puttur</option>
+                                        <option value="Sullia">Sullia</option>
+                                        <option value="Belthangady">Belthangady</option>
+                                        <option value="Moodabidri">Moodabidri</option>
+                                    </optgroup>
+                                </select>
                             </div>
                         </div>
 
@@ -323,7 +353,7 @@ export default function RegisterBusiness() {
                                     Processing...
                                 </>
                             ) : (
-                                'Submit Registration'
+                                'Submit Form'
                             )}
                         </button>
                     </form>

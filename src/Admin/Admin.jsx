@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Package, Plus, List, LogOut, User, Store, ChartBarStacked } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Admin() {
     const [inventoryCount, setInventoryCount] = useState(null);
@@ -38,6 +39,11 @@ export default function Admin() {
         fetchInventoryCount();
     }, [navigate]);
 
+
+    const handleComingSoon = ({ x }) => {
+        toast(`${x} feature is coming soon!`);
+    };
+
     const actions = [
         {
             label: 'Add Inventory',
@@ -72,14 +78,14 @@ export default function Admin() {
             description: 'View transactions',
             icon: <Package size={22} />,
             color: 'bg-orange-600 hover:bg-orange-700',
-            onClick: () => navigate('/admin/orders'),
+            onClick: () => handleComingSoon({ x: 'Orders' }),
         },
         {
             label: 'Reports',
             description: 'Generate analytics',
             icon: <List size={22} />,
             color: 'bg-gray-700 hover:bg-gray-800',
-            onClick: () => navigate('/admin/reports'),
+            onClick: () => handleComingSoon({ x: 'Reports' }),
         },
         {
             label: 'Categories',
@@ -92,6 +98,19 @@ export default function Admin() {
 
     return (
         <div className="min-h-screen bg-green-50 flex items-center justify-center font-sans">
+            <Toaster
+                position="top-center"
+                toastOptions={{
+                    duration: 1000,
+                    style: {
+                        background: '#fff',
+                        color: '#333',
+                        border: '1px solid #e5e7eb',
+                        padding: '8px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                    },
+                }}
+            />
             <div className="w-full max-w-6xl mx-4 my-8 shadow-2xl bg-white border border-green-200 overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between px-8 py-6 border-b border-green-200 bg-white">

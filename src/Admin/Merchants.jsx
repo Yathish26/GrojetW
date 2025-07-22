@@ -44,6 +44,12 @@ export default function Merchants() {
             });
             
             const data = await response.json();
+
+            if (data.tokenValid === false) {
+                localStorage.removeItem('admintoken');
+                navigate('/admin/login');
+                return;
+            }
             
             if (response.ok) {
                 setMerchants(data.merchants || []);

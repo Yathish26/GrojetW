@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiUser, FiSearch, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -9,6 +10,8 @@ export default function Users() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -62,11 +65,18 @@ export default function Users() {
         }
       );
 
+      const data = await response.json();
+
+      if (data.tokenValid === false) {
+        localStorage.removeItem('admintoken');
+        navigate('/admin/login');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Failed to fetch total users count');
       }
 
-      const data = await response.json();
       setTotalUsers(data.count || 0);
     } catch (error) {
       console.error('Error fetching total users:', error);
@@ -96,6 +106,21 @@ export default function Users() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#fff',
+            color: '#333',
+            border: '1px solid #e5e7eb',
+            padding: '16px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+          },
+          success: { iconTheme: { primary: '#10B981', secondary: '#fff' } },
+          error: { iconTheme: { primary: '#EF4444', secondary: '#fff' } },
+        }}
+      />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -141,7 +166,7 @@ export default function Users() {
         <div className="bg-white shadow overflow-hidden">
           {loading ? (
             <div className="flex justify-center items-center p-12">
-              <div className="animate-spin h-10 w-10 border-t-2 border-b-2 border-green-500"></div>
+              <div className="animate-spin h-10 w-10 border-t-2 border-b-2 rounded-full border-green-500"></div>
             </div>
           ) : users.length === 0 ? (
             <div className="p-8 text-center text-gray-500">
@@ -167,8 +192,8 @@ export default function Users() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 py-1 inline-flex text-xs font-semibold ${user.status
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
                             }`}>
                             {user.status ? 'Active' : 'Inactive'}
                           </span>
@@ -198,9 +223,8 @@ export default function Users() {
                   <button
                     onClick={() => paginate(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className={`px-2 py-2 border bg-white text-sm font-medium ${
-                      currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
-                    }`}
+                    className={`px-2 py-2 border bg-white text-sm font-medium ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
+                      }`}
                   >
                     <FiChevronLeft className="h-5 w-5" />
                   </button>
@@ -219,11 +243,10 @@ export default function Users() {
                       <button
                         key={pageNum}
                         onClick={() => paginate(pageNum)}
-                        className={`px-4 py-2 border-t border-b bg-white text-sm font-medium ${
-                          currentPage === pageNum
-                            ? 'z-10 bg-green-50 border-green-500 text-green-600'
-                            : 'border-gray-300 text-gray-500 hover:bg-gray-50'
-                        }`}
+                        className={`px-4 py-2 border-t border-b bg-white text-sm font-medium ${currentPage === pageNum
+                          ? 'z-10 bg-green-50 border-green-500 text-green-600'
+                          : 'border-gray-300 text-gray-500 hover:bg-gray-50'
+                          }`}
                         style={{ borderLeft: i === 0 ? undefined : 'none', borderRight: i === 4 ? undefined : 'none' }}
                       >
                         {pageNum}
@@ -233,9 +256,8 @@ export default function Users() {
                   <button
                     onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
-                    className={`px-2 py-2 border bg-white text-sm font-medium ${
-                      currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
-                    }`}
+                    className={`px-2 py-2 border bg-white text-sm font-medium ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'
+                      }`}
                   >
                     <FiChevronRight className="h-5 w-5" />
                   </button>
