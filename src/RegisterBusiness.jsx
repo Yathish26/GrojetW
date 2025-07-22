@@ -230,7 +230,7 @@ export default function RegisterBusiness() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
-                                    placeholder="your@email.com"
+                                    placeholder="Email"
                                     required
                                     disabled={loading}
                                     maxLength={60}
