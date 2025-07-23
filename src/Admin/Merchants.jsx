@@ -248,7 +248,7 @@ export default function Merchants() {
                                                 <div className="flex items-start gap-3">
                                                     <Mail className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
                                                     <div>
-                                                        <p className="text-sm font-medium text-gray-500">Contact</p>
+                                                        <p className="text-sm font-medium text-gray-500">Name</p>
                                                         <p className="text-gray-900">{merchant.contactPerson}</p>
                                                         <p className="text-gray-600 text-sm">{merchant.email}</p>
                                                     </div>
@@ -262,11 +262,18 @@ export default function Merchants() {
                                                         <p className="text-gray-900">{merchant.phone}</p>
                                                     </div>
                                                 </div>
+                                                {merchant.alternatePhone && <div className="flex items-start gap-3">
+                                                    <Phone className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Alternate Phone</p>
+                                                        <p className="text-gray-900">{merchant.alternatePhone}</p>
+                                                    </div>
+                                                </div>}
                                                 <div className="flex items-start gap-3">
                                                     <MapPin className="text-gray-400 mt-0.5 flex-shrink-0" size={16} />
                                                     <div>
-                                                        <p className="text-sm font-medium text-gray-500">Address</p>
-                                                        <p className="text-gray-900">{merchant.address}</p>
+                                                        <p className="text-sm font-medium text-gray-500">Region</p>
+                                                        <p className="text-gray-900">{merchant.region}</p>
                                                     </div>
                                                 </div>
                                             </div>

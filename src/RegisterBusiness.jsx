@@ -9,12 +9,53 @@ export default function RegisterBusiness() {
     const [businessName, setBusinessName] = useState('');
     const [contactPerson, setContactPerson] = useState('');
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [alternatePhone, setAlternatePhone] = useState('');
+    const [phone, setPhone] = useState('+91 ');
+    const [alternatePhone, setAlternatePhone] = useState('+91 ');
     const [businessType, setBusinessType] = useState('');
-    const [address, setAddress] = useState('');
+    const [region, setRegion] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+
+    // Phone validation handlers
+    const handlePhoneChange = (value, setter) => {
+        // Always start with +91 
+        if (!value.startsWith('+91 ')) {
+            value = '+91 ';
+        }
+        // Remove any non-digit characters after +91 
+        const digits = value.slice(4).replace(/\D/g, '');
+        // Limit to 10 digits after +91
+        const limitedDigits = digits.slice(0, 10);
+        setter('+91 ' + limitedDigits);
+    };
+
+    const handlePhoneKeyDown = (e) => {
+        // Prevent deleting +91 prefix
+        if ((e.key === 'Backspace' || e.key === 'Delete') && e.target.selectionStart <= 4) {
+            e.preventDefault();
+            return;
+        }
+        // Allow backspace, delete, tab, escape, enter, home, end, arrow keys
+        if ([8, 9, 27, 13, 46, 35, 36, 37, 38, 39, 40].includes(e.keyCode) ||
+            // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+            (e.keyCode === 65 && e.ctrlKey) ||
+            (e.keyCode === 67 && e.ctrlKey) ||
+            (e.keyCode === 86 && e.ctrlKey) ||
+            (e.keyCode === 88 && e.ctrlKey)) {
+            return;
+        }
+        // Only allow numbers after +91 prefix
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
+    };
+
+    const handlePhoneFocus = (e) => {
+        // Set cursor after +91 prefix
+        if (e.target.value === '+91 ') {
+            e.target.setSelectionRange(4, 4);
+        }
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -33,8 +74,38 @@ export default function RegisterBusiness() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!businessName || !contactPerson || !email || !phone || !businessType || !address) {
+        if (!businessName || !contactPerson || !email || !phone || !businessType || !region) {
             toast.error('Please fill in all required fields.', {
+                duration: 5000,
+                icon: <XCircle size={24} className="text-red-500" />,
+                style: {
+                    background: '#fef2f2',
+                    color: '#b91c1c',
+                    border: '1px solid #fecaca',
+                    padding: '16px',
+                }
+            });
+            return;
+        }
+
+        // Validate phone number has exactly 10 digits
+        if (phone.length !== 14) { // +91 (4 chars) + 10 digits = 14 total
+            toast.error('Please enter a valid 10-digit phone number.', {
+                duration: 5000,
+                icon: <XCircle size={24} className="text-red-500" />,
+                style: {
+                    background: '#fef2f2',
+                    color: '#b91c1c',
+                    border: '1px solid #fecaca',
+                    padding: '16px',
+                }
+            });
+            return;
+        }
+
+        // Validate alternate phone number if provided
+        if (alternatePhone.length > 4 && alternatePhone.length !== 14) {
+            toast.error('Please enter a valid 10-digit alternate phone number or leave it empty.', {
                 duration: 5000,
                 icon: <XCircle size={24} className="text-red-500" />,
                 style: {
@@ -60,9 +131,9 @@ export default function RegisterBusiness() {
                     contactPerson,
                     email,
                     phone,
-                    alternatePhone,
+                    alternatePhone: alternatePhone.length > 4 ? alternatePhone : '',
                     businessType,
-                    address,
+                    region,
                     message,
                 }),
             });
@@ -71,6 +142,9 @@ export default function RegisterBusiness() {
                 const errorData = await response.json();
                 if (errorData.dupMerchant) {
                     throw new Error("You've already registered with this email. We'll contact you soon!");
+                }
+                if (errorData.dupPhone) {
+                    throw new Error("You've already registered with this phone number. We'll contact you soon!");
                 }
                 throw new Error(errorData.message || 'Failed to register business.');
             }
@@ -91,10 +165,10 @@ export default function RegisterBusiness() {
             setBusinessName('');
             setContactPerson('');
             setEmail('');
-            setPhone('');
-            setAlternatePhone('');
+            setPhone('+91 ');
+            setAlternatePhone('+91 ');
             setBusinessType('');
-            setAddress('');
+            setRegion('');
             setMessage('');
             setShowForm(false);
             window.scrollTo(0, 0);
@@ -208,7 +282,7 @@ export default function RegisterBusiness() {
 
                             <div>
                                 <label htmlFor="contactPerson" className="block text-gray-200 text-base font-medium mb-2">
-                                    Contact Person<span className="text-yellow-400">*</span>
+                                    Your Name<span className="text-yellow-400">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -216,7 +290,7 @@ export default function RegisterBusiness() {
                                     value={contactPerson}
                                     onChange={(e) => setContactPerson(e.target.value)}
                                     className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
-                                    placeholder="Contact person's name"
+                                    placeholder="Your Name"
                                     required
                                     disabled={loading}
                                     maxLength={40}
@@ -248,12 +322,13 @@ export default function RegisterBusiness() {
                                     type="tel"
                                     id="phone"
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    onChange={(e) => handlePhoneChange(e.target.value, setPhone)}
+                                    onKeyDown={handlePhoneKeyDown}
+                                    onFocus={handlePhoneFocus}
                                     className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
-                                    placeholder="e.g. +91 98765 43210"
+                                    placeholder="+91 98765 43210"
                                     required
                                     disabled={loading}
-                                    maxLength={15}
                                 />
                             </div>
                             <div>
@@ -265,10 +340,11 @@ export default function RegisterBusiness() {
                                     type="tel"
                                     id="alternatePhone"
                                     value={alternatePhone}
-                                    onChange={(e) => setAlternatePhone(e.target.value)}
+                                    onChange={(e) => handlePhoneChange(e.target.value, setAlternatePhone)}
+                                    onKeyDown={handlePhoneKeyDown}
+                                    onFocus={handlePhoneFocus}
                                     className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
-                                    placeholder="e.g. +91 98765 43210"
-                                    maxLength={15}
+                                    placeholder="+91 98765 43210"
                                 />
                             </div>
                         </div>
@@ -294,13 +370,13 @@ export default function RegisterBusiness() {
                             </div>
 
                             <div>
-                                <label htmlFor="address" className="block text-gray-200 text-base font-medium mb-2">
+                                <label htmlFor="region" className="block text-gray-200 text-base font-medium mb-2">
                                     Region<span className="text-yellow-400">*</span>
                                 </label>
                                 <select
-                                    id="address"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
+                                    id="region"
+                                    value={region}
+                                    onChange={(e) => setRegion(e.target.value)}
                                     className="w-full p-3 rounded-lg bg-green-700 border border-green-600 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
                                     required
                                     disabled={loading}
