@@ -304,7 +304,7 @@ export default function Categories() {
                       href={category.image}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline text-sm flex items-center"
+                      className="text-green-500 hover:underline text-sm flex items-center"
                     >
                       <img
                         src={category.image}
@@ -344,7 +344,7 @@ export default function Categories() {
                 <td className="px-6 py-4 flex whitespace-nowrap text-right text-sm font-medium">
                   <button
                     onClick={() => handleEditClick(category)}
-                    className="text-blue-600 cursor-pointer hover:text-blue-900 mr-4 flex items-center justify-center"
+                    className="text-green-600 cursor-pointer hover:text-green-900 mr-4 flex items-center justify-center"
                     title="Edit Category"
                   >
                     <Edit size={16} />
@@ -388,7 +388,7 @@ export default function Categories() {
                 });
                 setIsModalOpen(true);
               }}
-              className="flex items-center px-4 py-2 bg-green-600 text-white font-semibold hover:bg-green-700  shadow-sm transition-colors duration-200"
+              className="flex items-center px-4 py-2 bg-green-600 text-white font-semibold hover:bg-green-700 shadow-sm"
             >
               <Plus size={18} className="mr-2" />
               Add Category
@@ -410,7 +410,7 @@ export default function Categories() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search category name..."
-                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-green-500 focus:border-green-500 text-sm"
               />
             </div>
 
@@ -423,7 +423,7 @@ export default function Categories() {
                 id="filterMainCategory"
                 value={filterMainCategory}
                 onChange={(e) => setFilterMainCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-green-500 focus:border-green-500 text-sm bg-white"
               >
                 <option value="">All Main Categories</option>
                 {mainCategories.map((category, index) => (
@@ -443,7 +443,7 @@ export default function Categories() {
                 id="filterIsActive"
                 value={filterIsActive}
                 onChange={(e) => setFilterIsActive(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-green-500 focus:border-green-500 text-sm bg-white"
               >
                 <option value="all">All Statuses</option>
                 <option value="true">Active</option>
@@ -460,7 +460,7 @@ export default function Categories() {
                 id="filterShowOnHome"
                 value={filterShowOnHome}
                 onChange={(e) => setFilterShowOnHome(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300  focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                className="w-full px-3 py-2 border border-gray-300  focus:ring-green-500 focus:border-green-500 text-sm bg-white"
               >
                 <option value="all">All Homepage Statuses</option>
                 <option value="true">Show on Home</option>
@@ -490,7 +490,7 @@ export default function Categories() {
       {/* Add/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-white/60  flex items-center justify-center p-4 z-50">
-          <div className="bg-white w-full max-w-2xl  shadow-xl animate-fade-in-up">
+          <div className="bg-white w-full max-w-2xl  shadow-xl">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-xl font-bold text-gray-800">
                 {editingCategory ? 'Edit Category' : 'Add New Category'}
@@ -516,7 +516,7 @@ export default function Categories() {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
                     required
                   />
                 </div>
@@ -530,7 +530,7 @@ export default function Categories() {
                     name="mainCategory"
                     value={formData.mainCategory}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white"
                     required
                   >
                     <option value="">Select a main category</option>
@@ -552,7 +552,7 @@ export default function Categories() {
                     name="image"
                     value={formData.image}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
                     placeholder="https://example.com/image.jpg"
                   />
                   {formData.image && (
@@ -580,7 +580,7 @@ export default function Categories() {
                     name="order"
                     value={formData.order}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
                   />
                 </div>
 
@@ -592,7 +592,7 @@ export default function Categories() {
                       name="isActive"
                       checked={formData.isActive}
                       onChange={handleInputChange}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
                     />
                     <label htmlFor="isActive" className="ml-2 text-sm text-gray-700 cursor-pointer">
                       Active
@@ -606,7 +606,7 @@ export default function Categories() {
                       name="showOnHome"
                       checked={formData.showOnHome}
                       onChange={handleInputChange}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
                     />
                     <label htmlFor="showOnHome" className="ml-2 text-sm text-gray-700 cursor-pointer">
                       Show on Homepage
@@ -626,7 +626,7 @@ export default function Categories() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-4 py-2 bg-blue-600 text-white  hover:bg-blue-700 disabled:opacity-70 flex items-center justify-center transition-colors duration-200 shadow-sm"
+                  className="px-4 py-2 bg-green-600 text-white  hover:bg-green-700 disabled:opacity-70 flex items-center justify-center transition-colors duration-200 shadow-sm"
                 >
                   {loading && <Loader2 className="animate-spin mr-2" size={18} />}
                   {editingCategory ? 'Update' : 'Add'}

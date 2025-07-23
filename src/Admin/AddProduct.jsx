@@ -9,8 +9,8 @@ export default function AddProduct() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    highlights: [''],
-    images: [''],
+    highlights: [],
+    images: [],
     thumbnail: '',
     brand: '',
     category: '',
@@ -47,7 +47,7 @@ export default function AddProduct() {
     isActive: true,
     isFeatured: false,
     tags: [],
-    searchKeywords: ['']
+    searchKeywords: []
   });
 
   const [categories, setCategories] = useState([]);
@@ -240,8 +240,8 @@ export default function AddProduct() {
         setFormData({
           name: '',
           description: '',
-          highlights: [''],
-          images: [''],
+          highlights: [],
+          images: [],
           thumbnail: '',
           brand: '',
           category: '',
@@ -278,7 +278,7 @@ export default function AddProduct() {
           isActive: true,
           isFeatured: false,
           tags: [],
-          searchKeywords: ['']
+          searchKeywords: []
         });
       } else {
         throw new Error(data.message || 'Failed to add product');
