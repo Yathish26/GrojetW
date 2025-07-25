@@ -66,19 +66,21 @@ export default function AddProduct() {
     { value: 'other', label: 'Other' }
   ];
 
-  useEffect(() => {
-    const token = localStorage.getItem('admintoken');
-    if (!token) {
-      localStorage.removeItem('admintoken');
-      navigate('/admin/login');
-      return;
-    }
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  }, []);
 
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories`, {
-          headers: { Authorization: `Bearer ${token}` }
+          credentials: 'include', // use cookie for auth
         });
+
+        if (response.status === 401) {
+          navigate('/admin/login');
+          return;
+        }
 
         if (!response.ok) throw new Error('Failed to fetch categories');
 
@@ -93,6 +95,7 @@ export default function AddProduct() {
     };
 
     fetchCategories();
+    // eslint-disable-next-line
   }, [navigate]);
 
   const handleChange = (e) => {
@@ -227,10 +230,16 @@ export default function AddProduct() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('admintoken')}`
         },
+        credentials: 'include', // use cookie for auth
         body: JSON.stringify(payload)
       });
+
+      if (response.status === 401) {
+        toast.error('Authentication error. Please login again.');
+        navigate('/admin/login');
+        return;
+      }
 
       const data = await response.json();
 

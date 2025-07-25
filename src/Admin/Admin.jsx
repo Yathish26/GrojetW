@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Package, Plus, List, LogOut, User, Store, ChartBarStacked } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import { MdAdminPanelSettings } from 'react-icons/md';
 
 export default function Admin() {
     const [inventoryCount, setInventoryCount] = useState(null);
@@ -10,20 +11,13 @@ export default function Admin() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('admintoken');
-        if (!token) {
-            localStorage.removeItem('admintoken');
-            navigate('/admin/login');
-            return;
-        }
         const fetchInventoryCount = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_SERVER}/products/count`, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    credentials: 'include',
                 });
                 const data = await response.json();
-                if (data.tokenValid === false) {
-                    localStorage.removeItem('admintoken');
+                if (data.tokenValid === false || response.status === 401) {
                     navigate('/admin/login');
                     return;
                 }
@@ -39,6 +33,18 @@ export default function Admin() {
         fetchInventoryCount();
     }, [navigate]);
 
+    // Logout now just clears cookies on server side (optional) and navigates to login
+    const handleLogout = async () => {
+        try {
+            await fetch(`${import.meta.env.VITE_SERVER}/admin/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+        } catch (e) {
+            // Ignore errors
+        }
+        navigate('/admin/login');
+    };
 
     const handleComingSoon = ({ x }) => {
         toast(`${x} feature is coming soon!`);
@@ -115,17 +121,11 @@ export default function Admin() {
                 {/* Header */}
                 <div className="flex items-center justify-between px-8 py-6 border-b border-green-200 bg-white">
                     <div className="flex items-center gap-3">
-                        <User className="text-green-700" size={28} />
-                        <div>
-                            <h1 className="text-2xl font-bold text-green-900">Admin Dashboard</h1>
-                            <p className="text-green-500 text-sm">Welcome, Admin</p>
-                        </div>
+                        <MdAdminPanelSettings className="text-green-700" size={28} />
+                        <h1 className="text-2xl font-bold text-green-900">Grojet Control Panel</h1>
                     </div>
                     <button
-                        onClick={() => {
-                            localStorage.removeItem('admintoken');
-                            navigate('/admin/login');
-                        }}
+                        onClick={handleLogout}
                         className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-700 bg-green-100 hover:bg-green-200 transition"
                     >
                         <LogOut size={18} />

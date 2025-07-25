@@ -23,34 +23,26 @@ export default function Merchants() {
 
     const navigate = useNavigate();
 
+    // Remove localStorage token check (now handled by cookie on backend)
     useEffect(() => {
-        const token = localStorage.getItem('admintoken');
-        if (!token) {
-            localStorage.removeItem('admintoken');
-            navigate('/admin/login');
-        }
+        // No need to check localStorage for token
+        // Backend will check cookie; if not authenticated, protected route returns 401
     }, [navigate]);
 
     const fetchMerchants = async (page = 1) => {
-        const token = localStorage.getItem('admintoken');
-        if (!token) return;
-
         try {
             setLoading(true);
             const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/merchants/enquiries?page=${page}&limit=${pagination.limit}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                credentials: 'include', // <-- send cookie for auth
             });
-            
-            const data = await response.json();
 
-            if (data.tokenValid === false) {
-                localStorage.removeItem('admintoken');
+            if (response.status === 401) {
                 navigate('/admin/login');
                 return;
             }
-            
+
+            const data = await response.json();
+
             if (response.ok) {
                 setMerchants(data.merchants || []);
                 setPagination({
@@ -74,19 +66,21 @@ export default function Merchants() {
 
     useEffect(() => {
         fetchMerchants(pagination.page);
+        // eslint-disable-next-line
     }, [pagination.page]);
 
     const handleDelete = async (id) => {
-        const token = localStorage.getItem('admintoken');
-        if (!token) return;
-
         try {
             const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/merchants/enquiries/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                credentials: 'include', // <-- send cookie for auth
             });
+
+            if (response.status === 401) {
+                toast.error('Authentication error. Please login again.');
+                navigate('/admin/login');
+                return;
+            }
 
             if (response.ok) {
                 toast.success('Merchant application deleted successfully');

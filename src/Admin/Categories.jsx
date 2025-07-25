@@ -40,7 +40,6 @@ export default function Categories() {
     "Health & Wellness",
   ]
 
-
   // Form states
   const [formData, setFormData] = useState({
     name: '',
@@ -55,15 +54,14 @@ export default function Categories() {
   const fetchCategories = useCallback(async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('admintoken');
-      if (!token) {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories`, {
+        credentials: 'include', // <-- use cookie
+      });
+
+      if (response.status === 401) {
         navigate('/admin/login');
         return;
       }
-
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch categories');
@@ -120,13 +118,6 @@ export default function Categories() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem('admintoken');
-      if (!token) {
-        toast.error('Authentication token missing');
-        navigate('/admin/login');
-        return;
-      }
-
       const endpoint = `${import.meta.env.VITE_SERVER}/admin/categories`;
       const method = editingCategory ? 'PUT' : 'POST';
       const url = editingCategory ? `${endpoint}/${editingCategory}` : endpoint;
@@ -135,10 +126,16 @@ export default function Categories() {
         method,
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
+        credentials: 'include', // <-- use cookie
         body: JSON.stringify(formData),
       });
+
+      if (response.status === 401) {
+        toast.error('Authentication error. Please login again.');
+        navigate('/admin/login');
+        return;
+      }
 
       const data = await response.json();
 
@@ -177,19 +174,17 @@ export default function Categories() {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem('admintoken');
-      if (!token) {
-        toast.error('Authentication token missing');
-        navigate('/admin/login');
-        return;
-      }
 
       const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories/${categoryToDelete._id}`, {
         method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include', // <-- use cookie
       });
+
+      if (response.status === 401) {
+        toast.error('Authentication error. Please login again.');
+        navigate('/admin/login');
+        return;
+      }
 
       const data = await response.json();
 

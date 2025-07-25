@@ -5,7 +5,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import Modal from 'react-modal';
 import ChipInput from '../Components/ChipInput';
 
-
 Modal.setAppElement('#root');
 
 const DEFAULT_VARIANT = { label: '', price: 0, mrp: 0, stock: 0, unit: '', image: '' };
@@ -43,59 +42,57 @@ export default function Products() {
   const [filters, setFilters] = useState({ category: '', status: 'all' });
 
   const navigate = useNavigate();
-  const token = localStorage.getItem('admintoken');
 
   // Fetch products
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/products`, {
-        headers: { Authorization: `Bearer ${token}` }
+        credentials: 'include', // use cookie for auth
       });
+      if (response.status === 401) {
+        navigate('/admin/login');
+        return;
+      }
       if (!response.ok) throw new Error('Failed to fetch products');
       const data = await response.json();
       setProducts(data.products || []);
     } catch (error) {
       toast.error(error.message);
-      if (error.message.includes('Unauthorized')) {
-        localStorage.removeItem('admintoken');
-        navigate('/admin/login');
-      }
     } finally {
       setLoading(false);
     }
-  }, [token, navigate]);
+  }, [navigate]);
 
   // Fetch categories
   const fetchCategories = useCallback(async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/categories`, {
-        headers: { Authorization: `Bearer ${token}` }
+        credentials: 'include', // use cookie for auth
       });
+      if (response.status === 401) {
+        navigate('/admin/login');
+        return;
+      }
       if (!response.ok) throw new Error('Failed to fetch categories');
       const data = await response.json();
       setCategorylist(data.categories || []);
     } catch (error) {
       toast.error('Failed to load categories. Please refresh the page.');
     }
-  }, [token]);
+  }, [navigate]);
 
   useEffect(() => {
-    if (!token) {
-      localStorage.removeItem('admintoken');
-      navigate('/admin/login');
-      return;
-    }
     fetchProducts();
     fetchCategories();
-  }, [fetchProducts, fetchCategories, token, navigate]);
+  }, [fetchProducts, fetchCategories]);
 
   // Memoized categories for filter dropdown
   const categories = useMemo(() => {
     return [
       ...new Map(
         products
-          .filter(p => p.category) // Only products with a category
+          .filter(p => p.category)
           .map(p => [p.category._id, p.category.name])
       ).entries()
     ].map(([id, name]) => ({ id, name }));
@@ -124,8 +121,13 @@ export default function Products() {
     try {
       const response = await fetch(`${import.meta.env.VITE_SERVER}/admin/products/${productIdToDelete}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
+        credentials: 'include', // use cookie for auth
       });
+      if (response.status === 401) {
+        toast.error('Authentication error. Please login again.');
+        navigate('/admin/login');
+        return;
+      }
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to delete product');
@@ -142,7 +144,6 @@ export default function Products() {
 
   // Edit modal handlers
   const openEditModal = (product) => {
-    // Defensive copy for editing
     setEditProduct(JSON.parse(JSON.stringify(product)));
     setEditModalIsOpen(true);
   };
@@ -206,10 +207,15 @@ export default function Products() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
+        credentials: 'include', // use cookie for auth
         body: JSON.stringify(editProduct),
       });
+      if (response.status === 401) {
+        toast.error('Authentication error. Please login again.');
+        navigate('/admin/login');
+        return;
+      }
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update product');

@@ -16,24 +16,23 @@ export default function Users() {
   useEffect(() => {
     fetchUsers();
     fetchTotalUsers();
+    // eslint-disable-next-line
   }, [currentPage]);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('admintoken');
-      if (!token) {
-        throw new Error('Authentication token missing');
-      }
-
       const response = await fetch(
         `${import.meta.env.VITE_SERVER}/admin/users?page=${currentPage}`,
         {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          credentials: 'include', // <-- send cookie for auth
         }
       );
+
+      if (response.status === 401) {
+        navigate('/admin/login');
+        return;
+      }
 
       if (!response.ok) {
         throw new Error('Failed to fetch users');
@@ -51,27 +50,19 @@ export default function Users() {
 
   const fetchTotalUsers = async () => {
     try {
-      const token = localStorage.getItem('admintoken');
-      if (!token) {
-        return;
-      }
-
       const response = await fetch(
         `${import.meta.env.VITE_SERVER}/admin/users/count`,
         {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          credentials: 'include', // <-- send cookie for auth
         }
       );
 
-      const data = await response.json();
-
-      if (data.tokenValid === false) {
-        localStorage.removeItem('admintoken');
+      if (response.status === 401) {
         navigate('/admin/login');
         return;
       }
+
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error('Failed to fetch total users count');

@@ -30,17 +30,18 @@ export default function AdminLogin() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        credentials: 'include' // <-- This is required for cookies!
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.message || data.msg || 'Login failed');
       }
 
       if (data.success) {
-        localStorage.setItem('admintoken', data.token);
+        // No need to store token, cookie is set by the server
         navigate('/admin');
       }
     } catch (err) {
