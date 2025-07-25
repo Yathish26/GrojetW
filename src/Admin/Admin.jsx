@@ -122,14 +122,13 @@ export default function Admin() {
                 <div className="flex items-center justify-between px-8 py-6 border-b border-green-200 bg-white">
                     <div className="flex items-center gap-3">
                         <MdAdminPanelSettings className="text-green-700" size={28} />
-                        <h1 className="text-2xl font-bold text-green-900">Grojet Control Panel</h1>
+                        <h1 className="text-2xl font-bold text-green-900">Control Panel</h1>
                     </div>
                     <button
                         onClick={handleLogout}
                         className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-700 bg-green-100 hover:bg-green-200 transition"
                     >
                         <LogOut size={18} />
-                        Logout
                     </button>
                 </div>
                 {/* Main Content */}
