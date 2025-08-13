@@ -10,10 +10,16 @@ export default function Footer() {
             <nav className='sm:hidden block mb-4'>
                 <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-white">
                     <li>
-                        <Link to="/terms" className="hover:text-yellow-300 transition-colors duration-200">Terms & Conditions</Link>
+                        <Link to="https://merchant.razorpay.com/policy/R4RKNNMqxrihu0/terms" className="hover:text-yellow-300 transition-colors duration-200">Terms & Conditions</Link>
                     </li>
                     <li>
                         <Link to="/privacy-policy" className="hover:text-yellow-300 transition-colors duration-200">Privacy Policy</Link>
+                    </li>
+                    <li>
+                        <Link to="https://merchant.razorpay.com/policy/R4RKNNMqxrihu0/shipping" className="hover:text-yellow-300 transition-colors duration-200">Shipping</Link>
+                    </li>
+                    <li>
+                        <Link to="https://merchant.razorpay.com/policy/R4RKNNMqxrihu0/refund" className="hover:text-yellow-300 transition-colors duration-200">Cancellation & Refunds</Link>
                     </li>
                     <li>
                         <Link to="/register-business" className="hover:text-yellow-300 transition-colors duration-200">Register as Business</Link>
